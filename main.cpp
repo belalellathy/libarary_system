@@ -1,23 +1,23 @@
 #include <iostream>
 #include<string>
+#include<vector>
+#include <fstream>
+#include <sstream>
+
 
 using namespace std;
-void books_adding(string Books[][4], int& rows);
-void books_displyment(string Books[][4], int rows);
-void book_update(string Books[][4], int rows);
-void Book_find(string Books[][4], int rows);
-void book_borrow(string Books[][4], int rows);
-void book_return(string Books[][4], int rows);
-void book_remove(string[][4], int& rows);
-int rows = 1;
-string Books[100][4] = {
-    {
-        "1","Diary_of_a_wimpy_kid","Jeff_kinney","Avalibale"
-    }
-
-};
-int book_price[100]{ 50 };
+void book_read(vector<vector<string>>& Books1);
+void book_write(vector<vector<string>>& Books1);
+void books_displyment1(vector<vector<string>>& Books1);
+void Books_adding1(vector<vector<string>>& Books1);
+void Books_update(vector<vector<string>>& Books1);
+void books_find(vector<vector<string>>&Books1);
+void books_borrow(vector<vector<string>>&Books1);
+void books_return(vector<vector<string>>&Books1);
+void books_remove(vector<vector<string>>&Books1);
+vector<vector<string>> Books1 (1,vector<string>(5));
 int check_out = 0;
+
 int main()
 {
 
@@ -29,34 +29,43 @@ int main()
         cout << "Enter your choice: ";
         cin >> choice;
 
-        switch (choice) {
-        case 1:
-            cout << "Add books in form of \n" << "ID  Name Author " << endl;
-            rows++;
-            books_adding(Books, rows);
-            cout << "Book added successfully " << endl;
-            books_displyment(Books, rows);
 
-            break;
+        switch (choice) {
+        case 1:{
+           book_read(Books1);
+           cout<<Books1.size();
+           Books_adding1(Books1);
+            cout << "Book added successfully " << endl;
+            books_displyment1(Books1);
+            break;}
         case 2:
-            books_displyment(Books, rows);
+            book_read(Books1);
+            books_displyment1(Books1);
             break;
         case 3:
-            book_update(Books, rows);
+            book_read(Books1);
+            Books_update(Books1);
+            books_displyment1(Books1);
             break;
         case 4:
-            Book_find(Books, rows);
+            book_read(Books1);
+            books_find(Books1);
+
             break;
         case 5:
-            book_borrow(Books, rows);
-            cout << "\nTotal Price:" << check_out;
+            book_read(Books1);
+
+            books_borrow(Books1);
+
+            cout << "\nTotal Price:" << check_out<<endl;
             break;
         case 6:
-            book_return(Books, rows);
+            books_return(Books1);
             break;
         case 7:
-            book_remove(Books, rows);
-            books_displyment(Books, rows);
+            books_remove(Books1);
+           // book_remove(Books, rows);
+           // books_displyment(Books, rows);
             break;
         case 8:
             cout << "Exiting... See you soon, " << "!" << endl;
@@ -70,119 +79,19 @@ int main()
 
 
 
-
-
-
-
-void books_displyment(string Books[][4], int rows) {
-    for (int i = 0; i < rows; i++) {
-        for (int j = 0; j < 4; j++) {
-            cout << Books[i][j] << " ";
-        }
-        cout << book_price[i];
-        cout << endl;
-    }
-
-
-}
-void book_update(string Books[][4], int rows) {
-
+void books_remove(vector<vector<string>>&Books1){
+    book_read(Books1);
+    string id;
+    cout << "Enter ID of the book you want to remove: ";
+    cin >> id;
     int row_num;
-    string id;
-    cout << "enter Id: ";
-    cin >> id;
-    bool findd = false;
-    while (findd != true) {
-        for (int i = 0; i < rows; i++) {
-            if (id == Books[i][0]) {
-                row_num = i;
-                findd = true;
-                break;
-            }
-            else
-                continue;
-        }
-        if (findd == false) {
-            cout << "invalid id \n" << "enter another id: ";
-            cin >> id;
-
-
-        }
-    }
-    cout << "Add books in form of \n" << "ID  Name Author Price " << endl;
-    for (int i = row_num; i == row_num; i++) {
-        for (int j = 0; j < 3; j++) {
-            cin >> Books[i][j];
-
-        }
-        Books[i][3] = "Avalibale";
-        cin >> book_price[i];
-
-
-    }
-
-}
-
-
-void books_adding(string Books[][4], int& rows) {
-    int row_num;
-    bool findd;
-    string id;
-    cout << "enter Id: ";
-    cin >> id;
-    findd = false;
-    while (findd != true) {
-        cin >> id;
-
-        for (int i = 0; i < rows; i++) {
-            if (id == Books[i][0]) {
-                cout << "ID already exist\n" << "please enter another ID: ";
-                cin >> id;
-            }
-            else {
-                findd = true;
-                row_num = i;
-            }
-        }
-    }
-
-
-    for (int i = row_num; i < rows; i++) {
-
-
-        Books[i][0] = id;
-        cout << "Name: ";
-        cin >> Books[i][1];
-        cout << "Author: ";
-        cin >> Books[i][2];
-        Books[i][3] = "Avalibale";
-       // cout << Books[i][3]<<endl;
-        cout << "Price: ";
-        cin >> book_price[i];
-
-        break;
-
-
-
-    }
-
-}
-void Book_find(string Books[][4], int rows) {
-    string id;
-    cout << "Enter ID of the book you want to find: ";
-    cin >> id;
 
     bool findd = false;
     while (findd != true) {
-        cin >> id;
 
-        for (int i = 0; i < rows; i++) {
-            if (id == Books[i][0]) {
-                cout << Books[i][0] << " ";
-                cout << Books[i][1] << " ";
-                cout << Books[i][2] << " ";
-                cout << Books[i][3];
-                cout << book_price[i];
+        for (int i = 0; i < Books1.size(); i++) {
+            if (id == Books1[i][0]) {
+                row_num = i;
                 findd = true;
                 break;
             }
@@ -197,24 +106,53 @@ void Book_find(string Books[][4], int rows) {
 
 
     }
+    Books1.erase(Books1.begin()+row_num);
+    book_write(Books1);
 }
 
-void book_borrow(string Books[][4], int rows) {
-    string id;
+void books_find(vector<vector<string>>&Books1){
+     string id;
+ cout << "Enter ID of the book you want to find: ";
+ cin >> id;
+
+ bool findd = false;
+ while (findd != true) {
+
+
+     for (int i = 0; i < Books1.size(); i++) {
+         if (id == Books1[i][0]) {
+             cout << Books1[i][0] << " ";
+             cout << Books1[i][1] << " ";
+             cout << Books1[i][2] << " ";
+             cout << Books1[i][3]<<" ";
+             cout << Books1[i][4];
+             findd = true;
+             break;
+         }
+         else
+             continue;
+
+     }
+     if (findd == false) {
+         cout << "invalid id \n" << "enter another id: ";
+         cin >> id;
+     }
+
+
+ }
+}
+void books_borrow(vector<vector<string>>&Books1){
+   string id;
     cout << "enter Id: ";
     cin >> id;
     bool findd = false;
     while (findd != true) {
-        if (id.size() > 1) {
-            cout << "invalid id " << "please enter another id: ";
-            cin >> id;
-        }
-        for (int i = 0; i < rows; i++) {
-            if (id == Books[i][0]) {
-                if (Books[i][3] == "Avalibale") {
+        for (int i = 0; i < Books1.size(); i++) {
+            if (id == Books1[i][0]) {
+                if (Books1[i][3] == "Avalibale") {
                     cout << "Book borrowed succefully";
-                    Books[i][3] = "unavalible";
-                    check_out += book_price[i];
+                    Books1[i][3] = "unavalible";
+                    check_out += stoi(Books1[i][4]);
                 }
                 else {
                     cout << "Book is already Borrowed";
@@ -233,72 +171,189 @@ void book_borrow(string Books[][4], int rows) {
         }
 
     }
+     fstream Myfile("Books.txt",ios::out);
+        for(int i=0;i<Books1.size();i++){
+            for(int j=0;j<Books1[i].size();j++){
+                Myfile<<Books1[i][j]<<"|";
+            }
+            Myfile<<endl;
 
+
+        }
 
 }
-void book_return(string Books[][4], int rows) {
-    int row_num;
+
+
+void books_return(vector<vector<string>>&Books1){
+    book_read(Books1);
     string id;
     cout << "enter Id: ";
     cin >> id;
     bool findd = false;
     while (findd != true) {
-        cin >> id;
-        for (int i = 0; i < rows; i++) {
-            if (id == Books[i][0]) {
-                if (Books[i][3] == "unavalible") {
+        for (int i = 0; i < Books1.size(); i++) {
+
+            if (id == Books1[i][0]) {
+                if (Books1[i][3] == "unavalible") {
                     cout << "Book returned succefully";
-                    Books[i][3] = "Avalibale";
+                    Books1[i][3] = "Avalibale";
                 }
                 else {
-                    cout << "Book is already returned";
+                    cout << "\nBook is already returned\n";
                 }
                 findd = true;
                 break;
             }
-            else
+            else{
                 continue;
+                }
+        }
+        if(findd==false){
+            cout<<"wrong id "<<"please enter valid id: ";
+            cin>>id;
         }
     }
-
+    book_write(Books1);
 
 }
-void book_remove(string[][4], int& rows) {
-    string id;
-    cout << "Enter ID of the book you want to remove: ";
-    cin >> id;
-    int row_num;
 
+void books_displyment1(vector<vector<string>>& Books1) {
+    // Reading data from file
+    for (int i = 0; i < Books1.size(); i++) {
+        for (int j = 0; j < Books1[i].size(); j++) {
+            cout << Books1[i][j]<<" ";
+        }
+        cout<<endl;
+    }
+}
+void book_write(vector<vector<string>>& Books1){
+     fstream Myfile("Books.txt",ios::out);
+        for(int i=0;i<Books1.size();i++){
+            for(int j=0;j<Books1[i].size();j++){
+                Myfile<<Books1[i][j]<<"|";
+            }
+            Myfile<<endl;
+
+
+        }
+     Myfile.close();
+}
+void Books_adding1(vector<vector<string>>& Books1){
+    int row_num;
+    bool findd;
+    string id;
+    cout << "enter Id: ";
+    cin>>id;
+    if(Books1.size()>0&&Books1[0][0]!=" "){
+    findd = false;
+    while (findd ==false) {
+            for (int i = 0; i <= Books1.size(); i++) {
+
+            if (id == Books1[i][0]) {
+                cout << "ID already exist\n" ;
+                break;
+               // cin >> id;
+               // i=0;
+            }
+            else {
+             int s=Books1.size();
+            s-=1;
+            //cout<<i;
+            if(i==s){
+                findd=true;
+                break;
+            }
+            }
+        }
+        if(findd==false){
+        cout<< "please enter another ID: ";
+        cin>>id;
+
+        }
+    }
+    }
+
+vector<string>sub(5);
+
+        sub[0] = id;
+        cout << "Name: ";
+       cin >> sub[1];
+        cout << "Author: ";
+        cin >> sub[2];
+        sub[3] = "Avalibale";
+       // cout << Books[i][3]<<endl;
+        cout << "Price: ";
+        cin >> sub[4];
+
+
+    Books1.push_back(sub);
+    sub.clear();
+    book_write(Books1);
+}
+
+
+
+
+
+void Books_update(vector<vector<string>>& Books1){
+int row_num;
+    string id;
+    cout << "enter Id: ";
+    cin >> id;
     bool findd = false;
     while (findd != true) {
-        cin >> id;
-        for (int i = 0; i < rows; i++) {
-            if (id == Books[i][0]) {
+        for (int i = 0; i < Books1.size(); i++) {
+            if (id == Books1[i][0]) {
                 row_num = i;
                 findd = true;
                 break;
             }
             else
                 continue;
-
         }
         if (findd == false) {
             cout << "invalid id \n" << "enter another id: ";
             cin >> id;
+
+
         }
+    }
+
+    for (int i = row_num; i == row_num; i++) {
+        Books1[i][0] = id;
+        cout << "Name: ";
+        cin >> Books1[i][1];
+        cout << "Author: ";
+        cin >> Books1[i][2];
+        Books1[i][3] = "Avalibale";
+       // cout << Books[i][3]<<endl;
+        cout << "Price: ";
+        cin>>Books1[i][4];
 
 
     }
-    for (int i = row_num; i < rows; i++) {
-        for (int j = 0; j < 4; j++) {
-            Books[i][j] = Books[i + 1][j];
-        }
+    book_write(Books1);
     }
-    rows--;
-    cout << "Book removed succefuly ";
 
+
+void book_read(vector<vector<string>>& Books1){
+     Books1.clear();
+    string part;
+     vector<string>parts;
+    string s;
+    fstream file;
+    file.open("Books.txt",ios::in);
+    while(getline(file,s)){
+        stringstream ss(s);
+        while(getline(ss,part,'|')){
+            parts.push_back(part);
+
+        }
+         Books1.push_back(parts);
+         parts.clear();
+    }
+
+    file.close();
 }
-
-
 
 
